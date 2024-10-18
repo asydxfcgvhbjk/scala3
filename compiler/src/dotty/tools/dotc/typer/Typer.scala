@@ -78,6 +78,9 @@ object Typer {
   /** An attachment for GADT constraints that were inferred for a pattern. */
   val InferredGadtConstraints = new Property.StickyKey[core.GadtConstraint]
 
+  /** Indicates that a definition was copied over from the parent refinements */
+  val RefinementFromParent = new Property.StickyKey[Unit]
+
   /** An attachment on a Select node with an `apply` field indicating that the `apply`
    *  was inserted by the Typer.
    */
@@ -3071,7 +3074,7 @@ class Typer(@constructorOnly nestingLevel: Int = 0) extends Namer
             ( if sym.isType then TypeDef(sym.asType)
               else if sym.is(Method) then DefDef(sym.asTerm)
               else ValDef(sym.asTerm)
-            ).withSpan(impl.span.startPos)
+            ).withSpan(impl.span.startPos).withAttachment(RefinementFromParent, ())
           body ++ refinements
         case None =>
           body
@@ -4568,7 +4571,7 @@ class Typer(@constructorOnly nestingLevel: Int = 0) extends Namer
 
       // convert function literal to SAM closure
       tree match {
-        case closure(Nil, id @ Ident(nme.ANON_FUN), _)
+        case blockEndingInClosure(Nil, id @ Ident(nme.ANON_FUN), _)
         if defn.isFunctionNType(wtp) && !defn.isFunctionNType(pt) =>
           pt match {
             case SAMType(samMeth, samParent)
@@ -4577,6 +4580,8 @@ class Typer(@constructorOnly nestingLevel: Int = 0) extends Namer
               // but this prevents case blocks from implementing polymorphic partial functions,
               // since we do not know the result parameter a priori. Have to wait until the
               // body is typechecked.
+	          // Note: Need to come back to this when we clean up SAMs/PartialFunctions
+    	      // These conditions would most likely be affected by a precise spec.
               return toSAM(tree, samParent)
             case _ =>
           }

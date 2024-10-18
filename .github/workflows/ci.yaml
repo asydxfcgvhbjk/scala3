@@ -186,15 +186,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_gh_release.outputs.upload_url }}
-          asset_path: ./scala3-${{ env.RELEASE_TAG }}.zip.sha256
-          asset_name: scala3-${{ env.RELEASE_TAG }}.zip.sha256
-          asset_content_type: text/plain
-      - name: Upload tar.gz archive to GitHub Release (Universal)
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_gh_release.outputs.upload_url }}
           asset_path: ./scala3-${{ env.RELEASE_TAG }}.tar.gz
           asset_name: scala3-${{ env.RELEASE_TAG }}.tar.gz
           asset_content_type: application/gzip
@@ -246,7 +237,6 @@ jobs:
           asset_path: ./scala3-${{ env.RELEASE_TAG }}-x86_64-pc-linux.tar.gz.sha256
           asset_name: scala3-${{ env.RELEASE_TAG }}-x86_64-pc-linux.tar.gz.sha256
           asset_content_type: text/plain
-
 
       # Linux aarch64
       - name: Upload zip archive to GitHub Release (Linux aarch64)
