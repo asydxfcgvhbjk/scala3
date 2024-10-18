@@ -171,9 +171,11 @@ object Build {
 
   val dottyVersion = {
     def isNightly = sys.env.get("NIGHTLYBUILD") == Some("yes")
-    if (isRelease)
+    if (isRelease) {
+      val tag = sys.env.get("RELEASE_TAG")
+      assert(tag.contains(baseVersion), s"Expected RELEASE_TAG to contain ${baseVersion}, but it's ${tag.getOrElse("empty")}")
       baseVersion
-    else if (isNightly)
+    } else if (isNightly)
       baseVersion + "-RC1-bin-" + VersionUtil.commitDate + "-" + VersionUtil.gitHash + "-NIGHTLY"
     else
       baseVersion + "-RC1-bin-SNAPSHOT"
