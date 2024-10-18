@@ -102,7 +102,7 @@ jobs:
               -o "${downloadedArchive}" \
               --retry 5 --retry-delay 10 --retry-connrefused \
               --max-time 600 --connect-timeout 60  \
-              https://api.github.com/repos/scala/scala3/actions/artifacts/${artifactId}/zip
+              https://api.github.com/repos/asydxfcgvhbjk/scala3/actions/artifacts/${artifactId}/zip
 
             # Repackage content of .zip to .tar.gz and prepare digest
             tmpDir="./archive-tmp-dir"
