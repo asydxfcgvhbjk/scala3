@@ -10,6 +10,8 @@
 
 name: Build Scala Launchers
 run-name: Build Scala Launchers
+env:
+  RELEASEBUILD: yes
 
 on:
   workflow_call:
