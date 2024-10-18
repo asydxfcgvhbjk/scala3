@@ -15,5 +15,5 @@ fi
 
 # run sbt with the supplied arg
 SBT="$(cd "$(dirname "${BASH_SOURCE[0]}")" >& /dev/null && pwd)/sbt"
-CB_MVN_REPO_URL=https://scala3.westeurope.cloudapp.azure.com/maven2/test-release
+export CB_MVN_REPO_URL=https://scala3.westeurope.cloudapp.azure.com/maven2/test-release
 "$SBT" 'set every sonatypePublishToBundle := Some("Community Build Repo" at sys.env("CB_MVN_REPO_URL")); scala3-bootstrapped/publish'
